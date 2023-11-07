@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'
 import './App.css'
 import { blankImages, newImages } from './images'
 import PhaseOne from './PhaseOne'
+import PhaseTwo from './PhaseTwo'
 
 function App() {
   const [isPhaseOneStarted, setIsPhaseOneStarted] = useState(false)
@@ -27,7 +28,6 @@ function App() {
 
   const endPhaseOne = (phaseLog) => {
     logRef.current = {...logRef.current, phaseOne: phaseLog}
-    console.log(logRef.current)
     setIsPhaseOneFinished(true)
   }
 
@@ -66,18 +66,16 @@ function App() {
       randomNameAdverts.splice(randomNameAdverts.indexOf(randomNameAdvertsRandom[i]), 1)
     }
 
-    //select random 15 images from newImages
-    const newImagesRandom = []
-    for (let i = 0; i < 45; i++) {
-      const image = newImages[Math.floor(Math.random() * newImages.length)]
+    //add all new images
+    const newImagesArray = []
+    newImages.forEach(image => {
       const imageNameSplit = image.split('/')
       const imageName = imageNameSplit[imageNameSplit.length - 1]
-      newImagesRandom.push({name: imageName, src: image})
-      newImages.splice(newImages.indexOf(newImagesRandom[i]), 1)
-    }
+      newImagesArray.push({name: imageName, src: image})
+    })
 
     //combine all images
-    phaseTwoImagesRef.current = [...usernameAdverts, ...noNameAdvertsRandom, ...randomNameAdvertsRandom, ...newImagesRandom]
+    phaseTwoImagesRef.current = [...usernameAdverts, ...noNameAdvertsRandom, ...randomNameAdvertsRandom, ...newImagesArray]
     
     //shuffle images
     for (let i = phaseTwoImagesRef.current.length - 1; i > 0; i--) {
@@ -85,6 +83,25 @@ function App() {
       [phaseTwoImagesRef.current[i], phaseTwoImagesRef.current[j]] = [phaseTwoImagesRef.current[j], phaseTwoImagesRef.current[i]];
     }
   }
+
+  const endPhaseTwo = (phaseLog) => {
+    logRef.current = {...logRef.current, phaseTwo: phaseLog}
+    downloadLog()
+    setIsPhaseTwoFinished(true)
+  }
+
+  const downloadLog = () => {
+    const element = document.createElement("a");
+    const file = new Blob([JSON.stringify(logRef.current)], {type: 'text/plain'});
+    const timestamp = new Date().toISOString().replace(/:/g, "-");
+    const filename = username.replace(' ', '_').toLowerCase() + timestamp + "_log.txt";
+    element.href = URL.createObjectURL(file);
+    element.download = filename;
+    document.body.appendChild(element);
+    element.click();
+  }
+
+
 
   return (
     <div className="app-container">
@@ -124,11 +141,13 @@ function App() {
       </div>
       )}
       {isPhaseTwoStarted && !isPhaseTwoFinished && (
-        <h1></h1>
+        <PhaseTwo images={phaseTwoImagesRef.current} endPhaseTwo={endPhaseTwo}/>
       )}
-      {isPhaseTwoFinished && (
-        <h1>Experiment Finished</h1>
-      )}
+      {isPhaseTwoFinished && (<div className='thank-you-message'>
+        <h1>Thank you for your participation in this experiment</h1>
+        <p>You may exit the booth where you will be asked to complete a questionnaire.</p>
+        <p>After, the details of the experiment will be explained to you.</p>
+      </div>)}
     </div>
   )
 }
