@@ -7,7 +7,7 @@ import {  profileImages,
     advertsUserNameImages } from './images'
 
 const randomNames = ['Chloe', 'Brian', 'Trevor', 'Krissy', 'Donna', 'Taylor', 'Lottie', 'Megan', 'Katie', 'Stewart']
-const isRoundUsesRandomName = [false, false, false, true, true, true, true, true, true, true]
+const isRoundWithRandomNameOverlay = [false, false, false, true, true, true, true, true, true, true]
 
 export default function PhaseOne({ username, endPhaseOne }) {
     const maxRounds = 10
@@ -28,6 +28,64 @@ export default function PhaseOne({ username, endPhaseOne }) {
         const splitSrc = src.split('/')
         const imageName = splitSrc[splitSrc.length - 1]
         return imageName
+    }
+
+    const getImages = () => {
+        //shuffle isRoundWithRandomNameOverlay items in first round
+        if (round === 1) {
+            
+            for (let i = isRoundWithRandomNameOverlay.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [isRoundWithRandomNameOverlay[i], isRoundWithRandomNameOverlay[j]] = [isRoundWithRandomNameOverlay[j], isRoundWithRandomNameOverlay[i]];
+            }
+        }
+
+        //get random name
+        overlayRef.current = randomNames[Math.floor(Math.random() * randomNames.length)]
+        randomNames.splice(randomNames.indexOf(overlayRef.current), 1)
+
+        const roundImages = []
+        
+        //add profile images
+        profileImages.map((image, index) => {
+            if (image.includes(`p${round}profile`)) {
+                roundImages.push({src: image, imageName: getImageName(image), overlay: null})
+            }
+            return
+        })
+
+        //add 5 adverts with no name
+        for (let i = 0; i < 5; i++) {
+            const randomIndex = Math.floor(Math.random() * advertsNoNameImagesRef.current.length)
+            const image = advertsNoNameImagesRef.current[randomIndex]
+            roundImages.push({src: image, imageName: getImageName(image), overlay: null})
+            advertsNoNameImagesRef.current.splice(randomIndex, 1)
+        }
+
+        //add 5 adverts with username or random name
+        for (let i = 0; i < 5; i++) {
+            let image
+
+            if (isRoundWithRandomNameOverlay[round - 1]) {
+                const randomIndex = Math.floor(Math.random() * advertsRandomNameImagesRef.current.length)
+                image = advertsRandomNameImagesRef.current[randomIndex]
+                advertsRandomNameImagesRef.current.splice(randomIndex, 1)
+            } else {
+                const randomIndex = Math.floor(Math.random() * advertsUserNameImagesRef.current.length)
+                image = advertsUserNameImagesRef.current[randomIndex]
+                advertsUserNameImagesRef.current.splice(randomIndex, 1)
+            }
+
+            roundImages.push({src: image, imageName: getImageName(image), overlay: isRoundWithRandomNameOverlay[round - 1] ? overlayRef.current : username})
+        }
+
+        //shuffle round images
+        for (let i = roundImages.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [roundImages[i], roundImages[j]] = [roundImages[j], roundImages[i]];
+        }
+
+        roundImagesRef.current = roundImages
     }
 
     const updateRoundLog = (name) => {
@@ -113,61 +171,7 @@ export default function PhaseOne({ username, endPhaseOne }) {
     useEffect(() => {
         console.log('round', round)
 
-        //shuffle isroundusesrandomname items in first round
-        if (round === 1) {
-            for (let i = isRoundUsesRandomName.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [isRoundUsesRandomName[i], isRoundUsesRandomName[j]] = [isRoundUsesRandomName[j], isRoundUsesRandomName[i]];
-            }
-        }
-
-        //get random name
-        overlayRef.current = randomNames[Math.floor(Math.random() * randomNames.length)]
-        randomNames.splice(randomNames.indexOf(overlayRef.current), 1)
-
-        const roundImages = []
-        
-        //add profile images
-        profileImages.map((image, index) => {
-            if (image.includes(`p${round}profile`)) {
-                roundImages.push({src: image, imageName: getImageName(image), overlay: null})
-            }
-            return
-        })
-
-        //add 5 adverts with no name
-        for (let i = 0; i < 5; i++) {
-            const randomIndex = Math.floor(Math.random() * advertsNoNameImagesRef.current.length)
-            const image = advertsNoNameImagesRef.current[randomIndex]
-            roundImages.push({src: image, imageName: getImageName(image), overlay: null})
-            advertsNoNameImagesRef.current.splice(randomIndex, 1)
-        }
-
-        //add 5 adverts with username or random name
-        for (let i = 0; i < 5; i++) {
-            let image
-
-            if (isRoundUsesRandomName[round - 1]) {
-                const randomIndex = Math.floor(Math.random() * advertsRandomNameImagesRef.current.length)
-                image = advertsRandomNameImagesRef.current[randomIndex]
-                advertsRandomNameImagesRef.current.splice(randomIndex, 1)
-            } else {
-                const randomIndex = Math.floor(Math.random() * advertsUserNameImagesRef.current.length)
-                image = advertsUserNameImagesRef.current[randomIndex]
-                advertsUserNameImagesRef.current.splice(randomIndex, 1)
-            }
-
-            roundImages.push({src: image, imageName: getImageName(image), overlay: isRoundUsesRandomName[round - 1] ? overlayRef.current : username})
-        }
-
-        //shuffle round images
-        for (let i = roundImages.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [roundImages[i], roundImages[j]] = [roundImages[j], roundImages[i]];
-        }
-
-        roundImagesRef.current = roundImages
-
+        getImages()
         setIsRoundStarted(true)
     },[round])
 
