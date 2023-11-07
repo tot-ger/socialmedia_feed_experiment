@@ -567,7 +567,7 @@ const advertsUserNameImages = [
     advertsUserName_15
 ]
 
-const blankAdvertsNoNameImages = [
+const blankImages = [
     blank_advertsNoName_1,
     blank_advertsNoName_2,
     blank_advertsNoName_3,
@@ -718,4 +718,4 @@ const newImages = [
     newImage_45
 ]
 
-export { profileImages, advertsRandomNameImages, advertsNoNameImages, advertsUserNameImages, blankAdvertsNoNameImages, newImages }
+export { profileImages, advertsRandomNameImages, advertsNoNameImages, advertsUserNameImages, blankImages, newImages }
