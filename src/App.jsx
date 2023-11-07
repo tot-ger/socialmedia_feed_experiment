@@ -21,6 +21,7 @@ function App() {
   }
 
   const endPhaseOne = (phaseLog) => {
+    console.log(phaseLog)
     setIsPhaseOneFinished(true)
   }
 
@@ -39,6 +40,7 @@ function App() {
             <form className='username-form' onSubmit={handleStart}>
               <label>Enter your name:
                 <input  type="text"
+                        className='username-input'
                         required
                         name="username"
                         value={username}
