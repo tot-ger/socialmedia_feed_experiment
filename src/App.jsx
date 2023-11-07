@@ -15,13 +15,12 @@ function App() {
     e.preventDefault()
     if (!isPhaseOneStarted) {
       logRef.current = {username}
-      console.log(logRef.current)
       setIsPhaseOneStarted(true)
     }
   }
 
   const endPhaseOne = (phaseLog) => {
-    console.log(phaseLog)
+    logRef.current = {...logRef.current, phaseOne: phaseLog}
     setIsPhaseOneFinished(true)
   }
 
