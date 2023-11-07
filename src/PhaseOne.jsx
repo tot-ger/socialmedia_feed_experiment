@@ -10,7 +10,7 @@ const randomNames = ['Chloe', 'Brian', 'Trevor', 'Krissy', 'Donna', 'Taylor', 'L
 const isRoundUsesRandomName = [false, false, false, true, true, true, true, true, true, true]
 
 export default function PhaseOne({ username, endPhaseOne }) {
-    const maxRounds = 2
+    const maxRounds = 10
     const [round, setRound] = useState(1)
     const [isRoundStarted, setIsRoundStarted] = useState(false)
     const roundLogRef = useRef([])
