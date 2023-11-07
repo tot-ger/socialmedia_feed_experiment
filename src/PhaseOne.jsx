@@ -76,7 +76,7 @@ export default function PhaseOne({ username, endPhaseOne }) {
                 advertsUserNameImagesRef.current.splice(randomIndex, 1)
             }
 
-            roundImages.push({src: image, imageName: getImageName(image), overlay: isRoundWithRandomNameOverlay[round - 1] ? overlayRef.current : username})
+            roundImages.push({src: image, imageName: getImageName(image), overlay: isRoundWithRandomNameOverlay[round - 1] ? overlayRef.current : 'username'})
         }
 
         //shuffle round images
@@ -140,12 +140,12 @@ export default function PhaseOne({ username, endPhaseOne }) {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        setIsRoundStarted(false)
-
         if (ageRef.current === null || genderRef.current === null) {
             return
         }
-   
+        
+        setIsRoundStarted(false)
+        
         phaseLogRef.current.push(
         { 
             round: round,
@@ -169,8 +169,6 @@ export default function PhaseOne({ username, endPhaseOne }) {
     }
 
     useEffect(() => {
-        console.log('round', round)
-
         getImages()
         setIsRoundStarted(true)
     },[round])
@@ -198,7 +196,7 @@ export default function PhaseOne({ username, endPhaseOne }) {
                             <div className="feed-image-container">
                                 <img src={image.src} alt={image.imageName} className='feed-image'/>
                                 {image.overlay && <div className="feed-image-overlay">
-                                    <p>{image.overlay}</p>
+                                    <p>{image.overlay === 'username' ? username : image.overlay}</p>
                                 </div>}
                             </div>
                         </div>
