@@ -5,8 +5,11 @@ export default function PhaseTwo({ images, endPhaseTwo }) {
     const [index, setIndex] = useState(0)
     const phaseLogRef = useRef([])
     const timerRef = useRef(null)
+    
 
     const handleClick = (e) => {
+        const loadingScreen = document.getElementById('loading-screen')
+        loadingScreen.style.display = 'flex'
         const elapsedTime = Date.now() - timerRef.current
 
         const logItem = {
@@ -25,13 +28,11 @@ export default function PhaseTwo({ images, endPhaseTwo }) {
     }
 
     useEffect(() => {
-        const loadingScreen = document.getElementById('loading-screen')
-        loadingScreen.style.display = 'flex'
-
         setTimeout(() => {
+            const loadingScreen = document.getElementById('loading-screen')
             loadingScreen.style.display = 'none'
             timerRef.current = Date.now()
-        }, 1000)
+        }, 2000)
     }, [index])
 
 
