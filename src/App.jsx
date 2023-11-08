@@ -48,23 +48,33 @@ function App() {
 
     //select random 15 adverts of NoName
     const noNameAdverts = allSeenAdverts.filter(item => item.includes('NoName'))
+    for (let i = noNameAdverts.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));    
+      [noNameAdverts[i], noNameAdverts[j]] = [noNameAdverts[j], noNameAdverts[i]]
+    }
+
     const noNameAdvertsRandom = []
     for (let i = 0; i < 15; i++) {
-      const imageName = noNameAdverts[Math.floor(Math.random() * noNameAdverts.length)]
+      const imageName = noNameAdverts[i]
       const image = blankImages.filter(item => item.includes(imageName))[0]
       noNameAdvertsRandom.push({name: imageName, src: image})
-      noNameAdverts.splice(noNameAdverts.indexOf(noNameAdvertsRandom[i]), 1)
     }
 
     //select random 15 adverts of RandomName
     const randomNameAdverts = allSeenAdverts.filter(item => item.includes('RandomName'))
+    for (let i = randomNameAdverts.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [randomNameAdverts[i], randomNameAdverts[j]] = [randomNameAdverts[j], randomNameAdverts[i]]
+    }
+
     const randomNameAdvertsRandom = []
     for (let i = 0; i < 15; i++) {
-      const imageName = randomNameAdverts[Math.floor(Math.random() * randomNameAdverts.length)]
+      const imageName = randomNameAdverts[i]
       const image = blankImages.filter(item => item.includes(imageName))[0]
       randomNameAdvertsRandom.push({name: imageName, src: image})
       randomNameAdverts.splice(randomNameAdverts.indexOf(randomNameAdvertsRandom[i]), 1)
     }
+    
 
     //add all new images
     const newImagesArray = []
