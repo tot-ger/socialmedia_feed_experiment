@@ -49,6 +49,7 @@
     overflow-y: scroll;
     overflow-x: hidden;
     scroll-snap-type: y mandatory;
+    position: relative;
 }
 
 .full-height {
@@ -63,6 +64,24 @@
     align-items: center;
     justify-content: center;
     gap: 15px;
+}
+
+.round-loading-screen {
+    display: flex;
+    width: 100%;
+    background-color: #ebeff3;
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.round-loading-screen > h1 {
+    font-size: 2rem;
+    font-weight: 400;
+    animation: appear 1s ease-in-out alternate infinite;
 }
 
 .feed-item {

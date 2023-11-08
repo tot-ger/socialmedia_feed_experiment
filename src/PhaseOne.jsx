@@ -143,6 +143,9 @@ export default function PhaseOne({ username, endPhaseOne }) {
         if (ageRef.current === null || genderRef.current === null) {
             return
         }
+
+        const loadingScreen = document.getElementById('round-loading-screen')
+        loadingScreen.style.display = 'flex'
         
         setIsRoundStarted(false)
         
@@ -168,20 +171,22 @@ export default function PhaseOne({ username, endPhaseOne }) {
         }
     }
 
-    useEffect(() => {
+    useEffect(() => {       
         getImages()
         setIsRoundStarted(true)
+        setTimeout(() => {
+            const loadingScreen = document.getElementById('round-loading-screen')
+            loadingScreen.style.display = 'none'
+        }, 2000)
     },[round])
 
     return (
         <div className="phase-one-container">
-            {!isRoundStarted && (
-                <div className="round-loading">
-                    <h1>Loading...</h1>
-                </div>
-            )}
             {isRoundStarted && (
             <div className="feed-container" onScroll={handleScroll}>
+                <div className='round-loading-screen full-height' id='round-loading-screen'>
+                    <h1>Loading...</h1>
+                </div>
                 <div className="round-start-page full-height">
                     <h1>Scroll down to start</h1>
                     <div className="scroll-down-indicator">
