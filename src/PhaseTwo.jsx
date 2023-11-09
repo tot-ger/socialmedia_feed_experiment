@@ -5,7 +5,6 @@ export default function PhaseTwo({ images, endPhaseTwo }) {
     const [index, setIndex] = useState(0)
     const phaseLogRef = useRef([])
     const timerRef = useRef(null)
-    const phaseTwoImages = images
     
 
     const handleClick = (e) => {
@@ -14,14 +13,14 @@ export default function PhaseTwo({ images, endPhaseTwo }) {
         const elapsedTime = Date.now() - timerRef.current
 
         const logItem = {
-            image: phaseTwoImages[index].name,
+            image: images[index].name,
             markedAsSeen: e.target.value,
             time: elapsedTime
         }
 
         phaseLogRef.current.push(logItem)
 
-        if (index === phaseTwoImages.length - 1) {
+        if (index === images.length - 1) {
             endPhaseTwo(phaseLogRef.current)
         }
 
@@ -29,7 +28,6 @@ export default function PhaseTwo({ images, endPhaseTwo }) {
     }
 
     useEffect(() => {
-        console.log(phaseTwoImages)
         setTimeout(() => {
             const loadingScreen = document.getElementById('loading-screen')
             loadingScreen.style.display = 'none'
@@ -47,7 +45,7 @@ export default function PhaseTwo({ images, endPhaseTwo }) {
                 <button className='phase-two-btn btn-no' value={false} onClick={handleClick}>No ❌</button>
             </div>
             <div className="phase-two-image-container">
-                <img className="phase-two-image" src={phaseTwoImages[index].src} alt={phaseTwoImages[index].alt}/>
+                <img className="phase-two-image" src={images[index].src} alt={images[index].alt}/>
             </div>
         </div>
     )
