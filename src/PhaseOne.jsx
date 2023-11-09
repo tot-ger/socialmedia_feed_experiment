@@ -154,7 +154,7 @@ export default function PhaseOne({ username, endPhaseOne }) {
             round: round,
             age: ageRef.current,
             gender: genderRef.current,
-            onverlay: overlayRef.current ?? 'username',
+            overlay: overlayRef.current,
             log: roundLogRef.current
         })
 
