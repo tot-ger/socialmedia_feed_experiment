@@ -21,13 +21,13 @@ function App() {
     }
 
     if (isPhaseOneFinished && !isPhaseTwoStarted) {
-      setPhaseTwoImages()
       setIsPhaseTwoStarted(true)
     }
   }
 
   const endPhaseOne = (phaseLog) => {
     logRef.current = {...logRef.current, phaseOne: phaseLog}
+    setPhaseTwoImages()
     setIsPhaseOneFinished(true)
   }
 
