@@ -72,10 +72,8 @@ function App() {
       const imageName = randomNameAdverts[i]
       const image = blankImages.filter(item => item.includes(imageName))[0]
       randomNameAdvertsRandom.push({name: imageName, src: image})
-      randomNameAdverts.splice(randomNameAdverts.indexOf(randomNameAdvertsRandom[i]), 1)
     }
     
-
     //add all new images
     const newImagesArray = []
     newImages.forEach(image => {
